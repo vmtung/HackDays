@@ -19,19 +19,16 @@
 
             <TextView
                 android:id="@+id/TextFrom"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:text="From:" />
 
-            <EditText
-                android:id="@+id/FromField"
+            <Spinner
+                android:id="@+id/BuildingListFrom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10" >
+                android:layout_weight="1" />
 
-                <requestFocus />
-            </EditText>
         </LinearLayout>
 
         <LinearLayout
@@ -41,16 +38,16 @@
 
             <TextView
                 android:id="@+id/TextTo"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:text="To:" />
 
             <Spinner
-                android:id="@+id/BuildingList"
+                android:id="@+id/BuildingListTo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
     </LinearLayout>
 
     <fragment

@@ -4,5 +4,19 @@
     <string name="app_name">HopperMaps</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    
+    <string-array name="fromArray">  
+        <item>My location</item>  
+        <item>building 1</item>  
+        <item>building 2</item>  
+        <item>building 3</item>  
+        <item>building 4</item>  
+   </string-array>
+   
+    <string-array name="toArray">  
+        <item>My location</item>  
+        <item>building 5</item>  
+        <item>building 6</item>  
+        <item>building 7</item>  
+        <item>building 8</item>  
+   </string-array>
 </resources>

@@ -54,11 +54,19 @@ public class MainActivity extends FragmentActivity {
                         location.getLongitude());
             }
             
-            Spinner dropdown = (Spinner)findViewById(R.id.BuildingList);
-            String[] items = new String[]{"1", "2", "three"};
+            Spinner dropdownFrom = (Spinner)findViewById(R.id.BuildingListFrom);
+            Spinner dropdownTo = (Spinner)findViewById(R.id.BuildingListTo);
+            String[] items;
+            
+            items=getResources().getStringArray(R.array.fromArray);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            dropdown.setAdapter(adapter);
+            dropdownFrom.setAdapter(adapter);
+            
+            items=getResources().getStringArray(R.array.toArray);
+            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            dropdownTo.setAdapter(adapter);
             
             
             String url = getDirectionsUrl(new LatLng(52.949569,-1.186076), new LatLng(52.949866,-1.174017));				
