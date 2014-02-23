@@ -5,22 +5,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class ChooseActivity extends Activity {
 	String fromName;
 	String toName;
+	
+	ArrayAdapter<String> adapter;
+	EditText inputSearch;
+	
 	ListView listOptions;
 	boolean listBus=false;
 	boolean from = false;
@@ -47,9 +53,31 @@ public class ChooseActivity extends Activity {
 		}
 		CoorMap = new HashMap<String,LatLng>();
 		
+		inputSearch = (EditText) findViewById(R.id.inputSearch);
 		listOptions = (ListView) findViewById(R.id.listOptions);
 		
-		ArrayAdapter<String> adapter = null;
+		inputSearch.addTextChangedListener(new TextWatcher() {
+		     
+		    @Override
+		    public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+		        // When user changed the Text
+		        ChooseActivity.this.adapter.getFilter().filter(cs);   
+		    }
+		     
+		    @Override
+		    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+		            int arg3) {
+		        // TODO Auto-generated method stub
+		         
+		    }
+		     
+		    @Override
+		    public void afterTextChanged(Editable arg0) {
+		        // TODO Auto-generated method stub                          
+		    }
+		});
+		
+		//ArrayAdapter<String> adapter = null;
 		String[] optionsArray;
 		if (listBus){
 			optionsArray =  getResources().getStringArray(R.array.busStopArray);
