@@ -24,14 +24,36 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
 	private GoogleMap mMap;
+	
+	LatLng fromCoor;
+	LatLng toCoor;
+	String fromName;
+	String toName;
+	Button searchBtt;
+	ImageButton BttFromBusStop;
+	ImageButton BttFromBuilding;
+	ImageButton BttToBusStop;
+	ImageButton BttToBuilding;
+	
+	public static String FROM_NAME="from_name";
+	public static String TO_NAME="to_name";
+	public static String LIST_BUS="list bus";
+	public static String FROM="from";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,33 +70,84 @@ public class MainActivity extends FragmentActivity {
            
             //get current location
             Location location = mMap.getMyLocation();
+            
+            Bundle extras = getIntent().getExtras();
+    		if(extras !=null) {
+    			fromName = extras.getString(FROM_NAME);
+    			fromCoor = extras.getParcelable(ChooseActivity.FROM_COOR);
+    			toName = extras.getString(TO_NAME);
+    			toCoor = extras.getParcelable(ChooseActivity.TO_COOR);
+    		} else {
+    			if (location != null) {
+                    fromCoor = new LatLng(location.getLatitude(),
+                            location.getLongitude());
+                    toCoor = new LatLng(location.getLatitude(),
+                            location.getLongitude());
+                }
+                fromName=toName="My location";
+    		}
+            
+            
+            
+            TextView from = (TextView) findViewById(R.id.from);
+            TextView to = (TextView) findViewById(R.id.to);
+            
+            from.setText(fromName);
+            to.setText(toName);
+            
+            BttFromBusStop = (ImageButton) findViewById(R.id.fromBusStop);
+            BttFromBusStop.setId(1);
+            BttFromBusStop.setOnClickListener(new ShowOptionsListener());
+            BttFromBuilding = (ImageButton) findViewById(R.id.fromBuilding);
+            BttFromBuilding.setId(2);
+            BttFromBuilding.setOnClickListener(new ShowOptionsListener());
+            BttToBusStop = (ImageButton) findViewById(R.id.toBusStop);
+            BttToBusStop.setId(3);
+            BttToBusStop.setOnClickListener(new ShowOptionsListener());
+            BttToBuilding = (ImageButton) findViewById(R.id.toBuilding);
+            BttToBuilding.setId(4);
+            BttToBuilding.setOnClickListener(new ShowOptionsListener());
+            
+            searchBtt = (Button) findViewById(R.id.bttSearch);
+            searchBtt.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					//connect 2 point
+					String url = getDirectionsUrl(fromCoor, toCoor);				
+					
+					DownloadTask downloadTask = new DownloadTask();
+					
+					// Start downloading json data from Google Directions API
+					downloadTask.execute(url);
+				}
+			});
+            
+            
+            
+	}
+	
+	public class ShowOptionsListener implements OnClickListener {
 
-            if (location != null) {
-                LatLng myLocation = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-            }
-            
-            Spinner dropdownFrom = (Spinner)findViewById(R.id.BuildingListFrom);
-            Spinner dropdownTo = (Spinner)findViewById(R.id.BuildingListTo);
-            String[] items;
-            
-            items=getResources().getStringArray(R.array.fromArray);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            dropdownFrom.setAdapter(adapter);
-            
-            items=getResources().getStringArray(R.array.toArray);
-            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            dropdownTo.setAdapter(adapter);
-            
-            
-            String url = getDirectionsUrl(new LatLng(52.949569,-1.186076), new LatLng(52.949866,-1.174017));				
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
 			
-			DownloadTask downloadTask = new DownloadTask();
 			
-			// Start downloading json data from Google Directions API
-			downloadTask.execute(url);
+			Intent intent = new Intent(getApplicationContext(), ChooseActivity.class);
+			if (v.getId()==1 || v.getId()==3) intent.putExtra(LIST_BUS, true);
+			else intent.putExtra(LIST_BUS, false);
+			if (v.getId()==1 || v.getId()==2) intent.putExtra(FROM, true);
+			else intent.putExtra(FROM, false);
+			intent.putExtra(FROM_NAME, fromName);
+			intent.putExtra(TO_NAME, toName);
+			intent.putExtra(ChooseActivity.FROM_COOR, fromCoor);
+			intent.putExtra(ChooseActivity.TO_COOR, toCoor);
+		    startActivity(intent);
+
+		}
+		
 	}
 
 	@Override

@@ -9,7 +9,8 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
@@ -23,11 +24,24 @@
                 android:layout_height="wrap_content"
                 android:text="From:" />
 
-            <Spinner
-                android:id="@+id/BuildingListFrom"
+            <TextView
+                android:id="@+id/from"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:text="from location" />
+
+            <ImageButton
+                android:id="@+id/fromBusStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/btn_star" />
+
+            <ImageButton
+                android:id="@+id/fromBuilding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/btn_star" />
 
         </LinearLayout>
 
@@ -42,11 +56,33 @@
                 android:layout_height="wrap_content"
                 android:text="To:" />
 
-            <Spinner
-                android:id="@+id/BuildingListTo"
+            <TextView
+                android:id="@+id/to"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="to location" />
+
+            <ImageButton
+                android:id="@+id/toBusStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/btn_star" />
+
+            <ImageButton
+                android:id="@+id/toBuilding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/btn_star" />
+
         </LinearLayout>
+
+        <Button
+            android:id="@+id/bttSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Search" />
 
     </LinearLayout>
 
