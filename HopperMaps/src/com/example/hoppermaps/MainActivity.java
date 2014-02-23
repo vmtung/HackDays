@@ -249,7 +249,7 @@ public class MainActivity extends FragmentActivity {
 			super.onPostExecute(result);			
 			
 			ParserTask parserTask = new ParserTask();
-			Log.w("result",result);
+			//Log.w("result",result);
 			// Invokes the thread for parsing the JSON data
 			parserTask.execute(result);
 				
