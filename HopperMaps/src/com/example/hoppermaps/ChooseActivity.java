@@ -38,10 +38,10 @@ public class ChooseActivity extends Activity {
 		setContentView(R.layout.activity_choose);
 		Bundle extras = getIntent().getExtras();
 		if(extras !=null) {
-		    fromName = extras.getString(MainActivity.FROM_NAME);
-		    toName = extras.getString(MainActivity.TO_NAME);
-		    listBus=extras.getBoolean(MainActivity.LIST_BUS);
-		    from=extras.getBoolean(MainActivity.FROM);
+		    fromName = extras.getString(MenuActivity.FROM_NAME);
+		    toName = extras.getString(MenuActivity.TO_NAME);
+		    listBus=extras.getBoolean(MenuActivity.LIST_BUS);
+		    from=extras.getBoolean(MenuActivity.FROM);
 		    fromCoor=extras.getParcelable(FROM_COOR);
 		    toCoor=extras.getParcelable(TO_COOR);
 		}
@@ -76,17 +76,17 @@ public class ChooseActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		        String text = list.get(position);
-		        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+		        Intent i = new Intent(getApplicationContext(), MenuActivity.class);
 		        if (from) {
-		        	i.putExtra(MainActivity.FROM_NAME, text);
+		        	i.putExtra(MenuActivity.FROM_NAME, text);
 		        	i.putExtra(FROM_COOR, CoorMap.get(text));
-		        	i.putExtra(MainActivity.TO_NAME, toName);
+		        	i.putExtra(MenuActivity.TO_NAME, toName);
 		        	i.putExtra(TO_COOR, toCoor);
 		        }
 		        else {
-		        	i.putExtra(MainActivity.TO_NAME, text);
+		        	i.putExtra(MenuActivity.TO_NAME, text);
 		        	i.putExtra(TO_COOR, CoorMap.get(text));
-		        	i.putExtra(MainActivity.FROM_NAME, fromName);
+		        	i.putExtra(MenuActivity.FROM_NAME, fromName);
 		        	i.putExtra(FROM_COOR, fromCoor);
 		        }// <-- Assumed you image is Parcelable
 		        startActivity(i);

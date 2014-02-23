@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -40,20 +41,15 @@ import android.widget.TextView;
 public class MainActivity extends FragmentActivity {
 	private GoogleMap mMap;
 	
-	LatLng fromCoor;
-	LatLng toCoor;
-	String fromName;
-	String toName;
-	Button searchBtt;
-	ImageButton BttFromBusStop;
-	ImageButton BttFromBuilding;
-	ImageButton BttToBusStop;
-	ImageButton BttToBuilding;
 	
-	public static String FROM_NAME="from_name";
-	public static String TO_NAME="to_name";
-	public static String LIST_BUS="list bus";
-	public static String FROM="from";
+	
+	
+	public static String COOR_LIST="coor list";
+	public static String NAME_LIST="coor list";
+	HashMap<String,LatLng> coorMap;
+	ArrayList<String> nameList = new ArrayList<String>();
+
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,128 +62,41 @@ public class MainActivity extends FragmentActivity {
             if (mMap != null) {
                // setUpMap();
             }
-            mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(52.951883,-1.186656), 15.0f));
+            
             mMap.setMyLocationEnabled(true);
            
             //get current location
             Location location = mMap.getMyLocation();
-            
+            //Intent intent = getIntent();
             Bundle extras = getIntent().getExtras();
     		if(extras !=null) {
-    			fromName = extras.getString(FROM_NAME);
-    			fromCoor = extras.getParcelable(ChooseActivity.FROM_COOR);
-    			toName = extras.getString(TO_NAME);
-    			toCoor = extras.getParcelable(ChooseActivity.TO_COOR);
+    			coorMap = MenuActivity.CoorMapBusDrawingList;
+    			nameList = MenuActivity.listStop;
     		} else {
-    			if (location != null) {
-                    fromCoor = new LatLng(location.getLatitude(),
-                            location.getLongitude());
-                    toCoor = new LatLng(location.getLatitude(),
-                            location.getLongitude());
-                }
-                fromName=toName="My location";
+    			
     		}
             
             
             
-            TextView from = (TextView) findViewById(R.id.from);
-            TextView to = (TextView) findViewById(R.id.to);
+    		Log.d("coor", "sizeM "+coorMap.size());
             
-            from.setText(fromName);
-            to.setText(toName);
-            
-            BttFromBusStop = (ImageButton) findViewById(R.id.fromBusStop);
-            BttFromBusStop.setId(1);
-            BttFromBusStop.setOnClickListener(new ShowOptionsListener());
-            BttFromBuilding = (ImageButton) findViewById(R.id.fromBuilding);
-            BttFromBuilding.setId(2);
-            BttFromBuilding.setOnClickListener(new ShowOptionsListener());
-            BttToBusStop = (ImageButton) findViewById(R.id.toBusStop);
-            BttToBusStop.setId(3);
-            BttToBusStop.setOnClickListener(new ShowOptionsListener());
-            BttToBuilding = (ImageButton) findViewById(R.id.toBuilding);
-            BttToBuilding.setId(4);
-            BttToBuilding.setOnClickListener(new ShowOptionsListener());
-            
-            searchBtt = (Button) findViewById(R.id.bttSearch);
-            searchBtt.setOnClickListener(new OnClickListener() {
-            	public String nearestBusstopFrom = "Neward Hall";
-            	public String nearestBusstopTo = "Lenton and Wortley Hall";
-            	Map<String,LatLng> CoorMapBusDrawingList;
-            	List<String> busDrawingList;
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					//connect 2 point
-					LatLng previousLatLng;
-					CoorMapBusDrawingList = new HashMap<String,LatLng>();
-					busDrawingList = new ArrayList<String>();
-					String[] busStopandWaypointsArray = getResources().getStringArray(R.array.busStopandWaypointsArray);
-					
-					for (int i=0; i<busStopandWaypointsArray.length; i++){
-						String[] separate = busStopandWaypointsArray[i].split("#");
-						LatLng previousCoor = null;
-						if (separate[0].equals(nearestBusstopFrom)){
-							for (int j = i; j< (i+busStopandWaypointsArray.length); j++){
-								if (j>=busStopandWaypointsArray.length) j= j-busStopandWaypointsArray.length;
-								separate = busStopandWaypointsArray[j].split("#");
-								LatLng coor = new LatLng(Double.parseDouble(separate[1]), Double.parseDouble(separate[2]));
-								if (previousCoor!=null){
-									String url = getDirectionsUrl(previousCoor, coor);				
-									Log.w("asdf", url);
-									DownloadTask downloadTask = new DownloadTask();
-									
-									// Start downloading json data from Google Directions API
-									downloadTask.execute(url);
-								}
-								previousCoor = new LatLng(Double.parseDouble(separate[1]), Double.parseDouble(separate[2]));
-								CoorMapBusDrawingList.put(separate[0], coor);
-								
-								if (separate[0].equals(nearestBusstopTo)) break;
-							}
-						}
-					}
-					/*
-					String url = getDirectionsUrl(fromCoor, toCoor);				
+
+			
+			for (int i=0; i<coorMap.size()-1; i++) {
+				if (i==0) mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(coorMap.get(nameList.get(i)),15.0f));
+					String url = getDirectionsUrl(coorMap.get(nameList.get(i)), coorMap.get(nameList.get(i+1)));				
 					
 					DownloadTask downloadTask = new DownloadTask();
 					
 					// Start downloading json data from Google Directions API
 					downloadTask.execute(url);
-					*/
-				}
-				
-				public void reduceListBusstopandWaypoints(){
 					
-				}
-				
-			});
-            
+			}
             
             
 	}
 	
-	public class ShowOptionsListener implements OnClickListener {
 
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			
-			
-			Intent intent = new Intent(getApplicationContext(), ChooseActivity.class);
-			if (v.getId()==1 || v.getId()==3) intent.putExtra(LIST_BUS, true);
-			else intent.putExtra(LIST_BUS, false);
-			if (v.getId()==1 || v.getId()==2) intent.putExtra(FROM, true);
-			else intent.putExtra(FROM, false);
-			intent.putExtra(FROM_NAME, fromName);
-			intent.putExtra(TO_NAME, toName);
-			intent.putExtra(ChooseActivity.FROM_COOR, fromCoor);
-			intent.putExtra(ChooseActivity.TO_COOR, toCoor);
-		    startActivity(intent);
-
-		}
-		
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -310,7 +219,7 @@ public class MainActivity extends FragmentActivity {
             	DirectionsJSONParser parser = new DirectionsJSONParser();
             	
             	// Starts parsing data
-            	routes = parser.parse(jObject);    
+            	routes = parser.parse(jObject);
             }catch(Exception e){
             	e.printStackTrace();
             }

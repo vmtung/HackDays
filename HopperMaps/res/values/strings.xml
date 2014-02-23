@@ -6,17 +6,14 @@
     <string name="hello_world">Hello world!</string>
 
     <string-array name="busStopArray">
-        
         <item>Exchange Building#52.9540193#-1.1876022</item>
         <item>UP#52.9411034#-1.1924113</item>
     </string-array>
     <string-array name="buildingArray">
-        
         <item>Exchange Building#52.9540193#-1.1876022</item>
         <item>UP#52.9411034#-1.1924113</item>
     </string-array>
-
-     <string-array name="busStopandWaypointsArray">
+    <string-array name="busStopandWaypointsArray">
         <item>Exchange Building#52.9540193#-1.1876022</item>
         <item>Waypoints#52.9540427#-1.1873157</item>
         <item>Waypoints#52.9550338#-1.1923914</item>
@@ -37,7 +34,8 @@
         <item>9 Triump Road#52.9493973#-1.1829942</item>
         <item>Neward Hall#52.9530482#-1.1862261</item>
     </string-array>
-    
+
     <string name="title_activity_choose">ChooseActivity</string>
+    <string name="title_activity_menu">MenuActivity</string>
 
 </resources>
