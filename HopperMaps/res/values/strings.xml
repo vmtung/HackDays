@@ -16,6 +16,28 @@
         <item>UP#52.9411034#-1.1924113</item>
     </string-array>
 
+     <string-array name="busStopandWaypointsArray">
+        <item>Exchange Building#52.9540193#-1.1876022</item>
+        <item>Waypoints#52.9540427#-1.1873157</item>
+        <item>Waypoints#52.9550338#-1.1923914</item>
+        <item>Waypoints#52.9442097#-1.1916853</item>
+        <item>Geogre Green Library#52.9411034#-1.1924113</item>
+        <item>Portland Hill#52.9394726#-1.1940017</item>
+        <item>Library Road#52.9389261#-1.1951217</item>
+        <item>History#52.9363853#-1.204024</item>
+        <item>Rutland Hall#52.9384221#-1.2046426</item>
+        <item>Derby Hall#52.9421185#-1.2024042</item>
+        <item>Lenton and Wortley Hall#52.9423254#-1.199207</item>
+        <item>Geogre Green Library#52.9411131#-1.1924132</item>
+        <item>Portland Hill#52.9394782#-1.1939934</item>
+        <item>East Drive#52.9389827#-1.1916956</item>
+        <item>Art Centre#52.9390175#-1.1888727</item>
+        <item>Waypoints#52.9400746#-1.1823515</item>
+        <item>Waypoints#52.9481818#-1.1817399</item>
+        <item>9 Triump Road#52.9493973#-1.1829942</item>
+        <item>Neward Hall#52.9530482#-1.1862261</item>
+    </string-array>
+    
     <string name="title_activity_choose">ChooseActivity</string>
 
 </resources>
