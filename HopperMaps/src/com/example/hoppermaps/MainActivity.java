@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 
@@ -110,18 +111,56 @@ public class MainActivity extends FragmentActivity {
             
             searchBtt = (Button) findViewById(R.id.bttSearch);
             searchBtt.setOnClickListener(new OnClickListener() {
-				
+            	public String nearestBusstopFrom = "Neward Hall";
+            	public String nearestBusstopTo = "Lenton and Wortley Hall";
+            	Map<String,LatLng> CoorMapBusDrawingList;
+            	List<String> busDrawingList;
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					//connect 2 point
+					LatLng previousLatLng;
+					CoorMapBusDrawingList = new HashMap<String,LatLng>();
+					busDrawingList = new ArrayList<String>();
+					String[] busStopandWaypointsArray = getResources().getStringArray(R.array.busStopandWaypointsArray);
+					
+					for (int i=0; i<busStopandWaypointsArray.length; i++){
+						String[] separate = busStopandWaypointsArray[i].split("#");
+						LatLng previousCoor = null;
+						if (separate[0].equals(nearestBusstopFrom)){
+							for (int j = i; j< (i+busStopandWaypointsArray.length); j++){
+								if (j>=busStopandWaypointsArray.length) j= j-busStopandWaypointsArray.length;
+								separate = busStopandWaypointsArray[j].split("#");
+								LatLng coor = new LatLng(Double.parseDouble(separate[1]), Double.parseDouble(separate[2]));
+								if (previousCoor!=null){
+									String url = getDirectionsUrl(previousCoor, coor);				
+									Log.w("asdf", url);
+									DownloadTask downloadTask = new DownloadTask();
+									
+									// Start downloading json data from Google Directions API
+									downloadTask.execute(url);
+								}
+								previousCoor = new LatLng(Double.parseDouble(separate[1]), Double.parseDouble(separate[2]));
+								CoorMapBusDrawingList.put(separate[0], coor);
+								
+								if (separate[0].equals(nearestBusstopTo)) break;
+							}
+						}
+					}
+					/*
 					String url = getDirectionsUrl(fromCoor, toCoor);				
 					
 					DownloadTask downloadTask = new DownloadTask();
 					
 					// Start downloading json data from Google Directions API
 					downloadTask.execute(url);
+					*/
 				}
+				
+				public void reduceListBusstopandWaypoints(){
+					
+				}
+				
 			});
             
             

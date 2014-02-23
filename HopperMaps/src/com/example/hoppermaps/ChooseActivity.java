@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.LatLng;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,6 +31,7 @@ public class ChooseActivity extends Activity {
 	
 	public static String FROM_COOR="from coor";
 	public static String TO_COOR="to coor";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,6 +56,10 @@ public class ChooseActivity extends Activity {
 		} else {
 			optionsArray =  getResources().getStringArray(R.array.buildingArray);
 		}
+		
+		//// Truong's
+		
+		
 		
 		list = new ArrayList<String>();
 		for (int i=0; i<optionsArray.length; i++) {
